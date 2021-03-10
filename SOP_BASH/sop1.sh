@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#To jest komentarz.
+#To jest przykładowy komentarz.
 
 echo "Hello SOP Bash world"
 

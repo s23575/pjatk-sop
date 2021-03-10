@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "Skrypy uruchomiono z paramterami: $@"
+echo "Skrypt uruchomiono z parametrami: $@"

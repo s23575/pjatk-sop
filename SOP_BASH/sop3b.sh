@@ -1,9 +1,9 @@
 #!/bin/bash
 
 echo "Apostrof:"
-echo '$USER'	#nie wpisuje loginu
+echo '$USER'	#Nie wpisuje loginu
 echo "Brak apostrofu:"
-echo $USER	#wypisuje login
+echo $USER	#Wypisuje login
 echo "W cudzysłowie:"
-echo "$USER"	#również wypisuje login
+echo "$USER"	#Również wypisuje login
 
