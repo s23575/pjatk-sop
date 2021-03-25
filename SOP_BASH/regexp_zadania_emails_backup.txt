@@ -1,0 +1,24 @@
+1. Przykładowy e-mail przykladowy@przykladowy.com, który zostanie usunięty:
+
+przykladowy@przykladowy.com
+
+2. Przykładowy e-mail przykladowy@przykladowy.com.pl, który zostanie usunięty:
+
+przykladowy@przykladowy.com.pl
+
+3. Błędny, przykładowy e-mail _przykladowy@przykladowy.com.pl, który nie zostanie usunięty:
+
+_przykladowy@przykladowy.com.pl
+
+4. Błędny, przykładowy e-mail przyk ladowy@przykladowy.com.pl, który nie zostanie usunięty:
+
+przyk ladowy@przykladowy.com
+
+5. Błędny, przykłądowy e-mail przykladowy@@przykladowy.com.pl, który nie zostanie usunięty:
+
+przykladowy@@przykladowy.com.pl
+
+6. Błędny, przykładowy e-mail przykladowy@przykladowy.com.com.pl, który nie zostanie usunięty:
+
+przykladowy@przykladowy.com.com.pl
+

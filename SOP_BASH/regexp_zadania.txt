@@ -1,0 +1,24 @@
+"SOP_BASH2.pdf", REGEXP zadania:
+
+1. Przygotuj wyrażenie regularne sprawdzające czy tekst jest kodem pocztowym (cały tekst, czyli zaczyna się od cyfry i kończy się cyfrą). Sprawdź czy działa.
+
+echo -e "81-293\ntest\n-09232\n87-32" | sed -n '/^[0-9]\{2\}[-][0-9]\{3\}$/ p'
+
+Powyższe wyrażenie regularne spowoduje, że wyświetlony zostanie tylko fragment "82-293" z wyrażenia "81-293\ntest\n-09232\n87-32".
+
+2. Przygotuj wyrażenie regularne sprawdzające e-mail i zastosuj je do wykasowania wszystkich adresów e-mail w podanym pliku.
+ 
+sed -i '/^[A-Za-z0-9][^ @]*[@][^ @.]*[.][a-z]*[.]\?[a-z]*$/ d' regexp_zadania_emails.txt
+
+Aby usunąć wyrażenia pasujące do wyrażenia regularnego, należy użyć polecenia sed z parametrem -i oraz polecenia d[elete];
+chcąc skasować w pliku wszystkie linie niepasujące do wyrażenia regularnego, należy dodać parametr -n (-n -i);
+chcąc skopiować w pliku wszystkie linie pasujaće do wyrażenia regularnego, należy użyć polecenia p[rint].
+
+3. Przygotuj wyrażenie regularne, które będzie sprawdzało, czy tekst jest poprawnie napisanym polskim imieniem (od wielkiej litery, może mieć tylko litery i zawierać polskie znaki).
+
+echo -e "Czesław\nŁukasz\nĄcki\ntest\nmaciej\nMAciej" | sed -n '/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$/ p'
+
+Powyższe wyrażenie spowoduje, że zostaną wyświetlone następujące imiona (wyrażenia):
+Czesław
+Łukasz
+Ącki
