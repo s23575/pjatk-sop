@@ -13,7 +13,11 @@ int main () {
 	{
 		printf("Potomek (PID: %d) uspiony...\n", getpid());
 		sleep(5);
-		exit(0); //wyjscie z potomka
+		execl("bin/pwd", "pwd", (char *)0);
+        	perror ("Blad uruchamiania execl ls");
+        	_exit(1);
+
+		//exit(0); //wyjscie z potomka
 	}
 	while (waitpid(pid, &status, WNOHANG) == 0) //tutaj tylko jako rodzic
 	{

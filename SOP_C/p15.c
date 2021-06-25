@@ -10,7 +10,7 @@ int main()
 	
 	scanf("%f",&dolary); funty=przelicz(dolary);
 	
-	printf("%f $ to %.2f funta/funtow\n",dolary,funty);
+	printf("%.2f $ to %.2f funta/funtow\n",dolary,funty);
 
 	return 0;
 }

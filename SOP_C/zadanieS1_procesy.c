@@ -10,73 +10,82 @@
 
 int main(int argc, char* argv[]) {
 	
-	int status, exit_status;
+	int status;
 	
-	pid_t mojpid, x, y;
-	
-	mojpid = getpid();
-	
-	(x = fork()) && (y = fork());
+	pid_t x, y;
 
-	if (x < 0 || y < 0) {
+        if (signal(SIGTSTP, SIG_IGN) == SIG_ERR) {
+		perror("Błąd! Funkcja signal ma problem z SIGUSR1");
+                exit(1);
+        }
+
+	x = fork();
+
+	if (x < 0) {
 		printf("Błąd! Nie można utworzyć nowego procesu (potomka).\n");
 	}
 
 	if (x == 0) {
 		
+		printf ("< - - [%u] (proces potomny) - - >\n\n", (int) getpid());
+		
 		printf ("[%u] Utworzono proces potomny, a jego PID to: %d\n", (int) getpid (), (int) getpid ());
 		
-		printf ("[%u] Uruchomienie programu \"zadanieS1\" z parametrami 0 i -d w procesie potomnym.\n", (int) getpid ());
+		printf ("[%u] Uruchomienie programu \"zadanieS1\" z parametrami 0 i -u2 w procesie potomnym.\n", (int) getpid ());
 		
-		if (execl("/home/ubuntu/SOP/pjatk-sop/SOP_C/zadanieS1", "zadanieS1", "0", "-d", NULL) == -1) {
-			printf("Błąd! Uruchomienie programu nie powiodło się.\n");
-		}
-		
-		printf("[%u] Zakończony\n", (int) getpid ());
+		execl("/home/ubuntu/SOP/pjatk-sop/SOP_C/zadanieS1", "zadanieS1", "0", "-u2", NULL);
+		perror("Bląd! Uruchomienie programu nie powiodło się.\n");
+		_exit(1);
 
-	} else if (y == 0) {
-		
-		sleep(1); // Polecenia sleep służą przejrzystości - zachowaniu odpowiedniej kolejności uruchamiania i wyświetlania komend na terminalu.
+	} else {
 
-		printf ("[%u] Utworzono proces potomny, a jego PID to: %d\n", (int) getpid(), (int) getpid());
+		y  = fork();
+        
+		if (y < 0) {
+                	printf("Błąd! Nie można utworzyć nowego procesu (potomka).\n");
+        	}
 		
-		printf ("[%u] Uruchomienie programu \"zadanieS1\" z parametrami 0 i -u1 w procesie potomnym.\n", (int) getpid());
+		if (y == 0) {
 		
-		if (execl("/home/ubuntu/SOP/pjatk-sop/SOP_C/zadanieS1", "zadanieS1", "0", "-u1", NULL) == -1) {
-			printf("Bląd! Uruchomienie programu nie powiodło się.\n");
-		}
+			sleep(1); // Polecenia sleep służą przejrzystości - zachowaniu odpowiedniej kolejności uruchamiania i wyświetlania komend na terminalu.
 		
-		printf("[%u] Zakończony\n", (int) getpid());
+			printf ("\n< - - [%u] (proces potomny) - - >\n\n", (int) getpid());
 
-	}
-
-	else {
-
-		sleep(2); 	
-
-		printf("[%u] Wysyłanie sygnałów do programów uruchomionych w procesach potomnych.\n");	
-	
-		if (kill(x, SIGUSR1) == -1) { 
-			printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
-		}
+			printf ("[%u] Utworzono proces potomny, a jego PID to: %d\n", (int) getpid(), (int) getpid());
 		
-		if (kill(x, SIGUSR2) == -1) { 
-			printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
-		}
+			printf ("[%u] Uruchomienie programu \"zadanieS1\" z parametrami 0 i -u1 w procesie potomnym.\n", (int) getpid());
 		
-		if (kill(x, SIGINT) == -1) { 
-			printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
+			execl("/home/ubuntu/SOP/pjatk-sop/SOP_C/zadanieS1", "zadanieS1", "0", "-u1", NULL);
+	       		perror("Bląd! Uruchomienie programu nie powiodło się.\n");
+			_exit(1);
+		
+		} else {
+
+			sleep(2); 	
+
+			printf ("\n< - - [%u] (proces macierzysty) - - >\n\n", (int) getpid());
+		
+			printf("[%u] Wysyłanie sygnałów do programów uruchomionych w procesach potomnych.\n", (int) getpid());
+			
+			if (kill(x, SIGUSR1) == -1) { 
+				printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
+			}
+
+                	if (kill(y, SIGUSR1) == -1) {
+                        	printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
+                	}
+
+                	if (kill(0, SIGTSTP) == -1) {
+                        	printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
+                	}
+		
+			while (waitpid(x, &status, WNOHANG) == 0 && waitpid(y, &status, WNOHANG) == 0) {
+				sleep(1);
+			}
+
+			printf("\n< - - Koniec - ->\n");
 		}	
-	
-		if (kill(y, SIGUSR1) == -1) { 
-			printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
-		}
-		
-		while (waitpid(x, &status, WNOHANG) == 0 || waitpid(y, &status, WNOHANG) == 0) {
-			sleep(1);
-		}
-		
-		printf("[%u] Zakończony\n", mojpid);
 	} 
+
 	return 0;
 }
