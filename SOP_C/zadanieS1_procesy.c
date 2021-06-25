@@ -83,7 +83,7 @@ int main() {
                         	printf("Błąd! Wysłanie sygnałów (uruchomienie polecenia kill) nie powiodło się.\n");
                 	}
 		
-			while (waitpid(x, &status, WNOHANG) == 0 && waitpid(y, &status, WNOHANG) == 0) {
+			while (waitpid(x, &status, WNOHANG) == 0 || waitpid(y, &status, WNOHANG) == 0) {
 				sleep(1);
 			}
 
