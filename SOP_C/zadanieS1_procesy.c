@@ -8,13 +8,17 @@
 #include <signal.h>
 
 
-int main(int argc, char* argv[]) {
+int main() {
 	
 	int status;
 	
 	pid_t x, y;
 
-        if (signal(SIGTSTP, SIG_IGN) == SIG_ERR) {
+	// Wprowadzam ignorowanie wybranego syngału, żeby przy wysłaniu sygnału do całej grupy procesów
+	// nie "zadziałał" on również w odniesieniu do procesu macierzystego; ta instrukcja zostanie
+	// zastąpiona w procesach potomnych przez zastosowanie polecenia execl(). 
+
+	if (signal(SIGTSTP, SIG_IGN) == SIG_ERR) {
 		perror("Błąd! Funkcja signal ma problem z SIGUSR1");
                 exit(1);
         }
